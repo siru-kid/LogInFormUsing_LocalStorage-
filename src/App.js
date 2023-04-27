@@ -1,22 +1,39 @@
-import React from "react";
-import "./App.css";
-import AddTodo from "./components/addTodo";
-import TodoList from "./components/todoList";
-import VisibilityFilter from "./components/visibilityFilter";
-import { Provider } from "react-redux";
-import store from "./components/store";
+import React, { useState } from "react";
+import Dashboard from "./components/Dashboard";
+import Preferences from "./components/Preferences";
+import { Routes, Route, Link } from "react-router-dom";
+import Login from "./components/Login";
+import useToken from "./components/useToken";
 
-function App() {
+const App = () => {
+  const { token, setToken } = useToken();
+
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
+
   return (
-    <Provider store={store}>
-      <div className="App">
-        <h1>TODO Managers</h1>
-        <AddTodo />
-        <TodoList />
-        <VisibilityFilter />
-      </div>
-    </Provider>
+    <div className="wrapper">
+      <nav>
+        <ul>
+          <li>
+            {" "}
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            {" "}
+            <Link to="/preferences">Preferences</Link>
+          </li>
+        </ul>
+      </nav>
+      <h1>Application</h1>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/preferences" element={<Preferences />} />
+      </Routes>
+    </div>
   );
-}
+};
 
 export default App;
